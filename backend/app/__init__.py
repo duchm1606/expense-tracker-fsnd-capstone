@@ -44,24 +44,25 @@ def create_app(debug: bool = False):
     from app import models
     db.create_all()
 
-    # Fabricate database
-    budgets = models.Budgets(
-        name = 'test',
-        amount = 1000,
-        icon = '🚗'
-    )
-    budgets.insert()
-    print('Fabricate database done')
-
-    users = models.Budgets.query.all()
-    print(users)
-
-    # from flask_migrate import Migrate
-    # migrate = Migrate(app, db)
+    # Fabricate database (uncomment at the first time running)
+    # budgets = models.Budgets(
+    #     name = 'test',
+    #     amount = 1000,
+    #     icon = '🚗'
+    # )
+    # budgets.insert()
+    # print('Fabricate database done')
+    # users = models.Budgets.query.all()
+    # print(users)
 
     # Register restAPI for routes 
     from app.routes import dashboard_bp
     ## Register routes for apps
     app.register_blueprint(dashboard_bp)
+    
+
+    # Register error handlers
+    from app.util import errors_bp
+    app.register_blueprint(errors_bp)
 
     return app

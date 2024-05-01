@@ -1,37 +1,5 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-  /**
-   * Get all budgets
-   * GET /dashboard/budgets
-   */
-
-  /**
-   * Get all Expenses
-   * GET /dashboard/expenses
-   */
-
-  /**
-   * Get expense of budget
-   * GET /dashboard/expense/<int:id>
-   */
-
-   Edit a budget
-    PATCH /dashboard/expense/<int:id>
-
-    Delete a budget
-    PATCH /dashboard/budgets
-    {id}
-
-    Delete a expense
-    DELETE /dashboard/expense
-    {id}
-
-    Create a budget
-    POST /dashboard/budgets
-
-    Delete a expense
-    POST /dashboard/expenses
-
 ## Getting Started
 
 First, run the development server:

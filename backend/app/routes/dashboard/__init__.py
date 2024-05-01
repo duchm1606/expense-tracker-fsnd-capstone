@@ -1,6 +1,6 @@
 # Flask modules
 from flask import Blueprint
-
+from app.util import errors_bp
 # Blueprint modules
 from .budgets import budgets_bp
 

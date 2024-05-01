@@ -16,7 +16,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "YOUR-FALLBACK-SECRET-KEY")
 DATABASE_URI = "postgresql://{}:{}@{}/{}".format(DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
 
 
-
 class DevConfig:
     # Flask
     TESTING = True
@@ -26,6 +25,5 @@ class DevConfig:
     EXPLAIN_TEMPLATE_LOADING = False
     SECRET_KEY = SECRET_KEY
     # Database
-    # SQLALCHEMY_DATABASE_URI = DATABASE_URI
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgresql:1234@localhost:5432/expense-tracker"
+    SQLALCHEMY_DATABASE_URI = DATABASE_URI
 
