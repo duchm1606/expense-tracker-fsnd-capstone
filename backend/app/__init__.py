@@ -35,11 +35,20 @@ def create_app(debug: bool = False):
     # Setup Cross-Origin Resource Sharing
     cors.init_app(app)
 
+    # Use the after_request decorator to set Access-Control-Allow
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        response.headers.add('Access-Control-Allow-Headers', 'GET, POST, PATCH, DELETE, OPTIONS')
+        return response
+
     # Import all models and Create database tables
     from app import models
     db.create_all()
 
     # Register restAPI for routes 
-    # from app.routes import api_bp, pages_bp, auth_bp
+    from app.routes import pages_bp
+    ## Register routes for apps
+    app.register_blueprint(pages_bp)
 
     return app
