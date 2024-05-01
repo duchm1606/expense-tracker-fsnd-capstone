@@ -26,4 +26,6 @@ class DevConfig:
     EXPLAIN_TEMPLATE_LOADING = False
     SECRET_KEY = SECRET_KEY
     # Database
-    SQLALCHEMY_DATABASE_URI = DATABASE_URI
+    # SQLALCHEMY_DATABASE_URI = DATABASE_URI
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgresql:1234@localhost:5432/expense-tracker"
+

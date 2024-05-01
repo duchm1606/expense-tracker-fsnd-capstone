@@ -15,15 +15,13 @@ def create_app(debug: bool = False):
     # Set current_app context
     app.app_context().push()
 
-    if debug == True:
+    if (debug == 'True'):
         print('Running on Dev')
         from app.config.dev import DevConfig
-
         app.config.from_object(DevConfig)
     else:
         print('Running on Prod')
         from app.config.prod import ProdConfig
-
         app.config.from_object(ProdConfig)
 
     # Initialize extensions
@@ -46,9 +44,24 @@ def create_app(debug: bool = False):
     from app import models
     db.create_all()
 
+    # Fabricate database
+    budgets = models.Budgets(
+        name = 'test',
+        amount = 1000,
+        icon = '🚗'
+    )
+    budgets.insert()
+    print('Fabricate database done')
+
+    users = models.Budgets.query.all()
+    print(users)
+
+    # from flask_migrate import Migrate
+    # migrate = Migrate(app, db)
+
     # Register restAPI for routes 
-    from app.routes import pages_bp
+    from app.routes import dashboard_bp
     ## Register routes for apps
-    app.register_blueprint(pages_bp)
+    app.register_blueprint(dashboard_bp)
 
     return app

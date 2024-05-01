@@ -1,1 +1,1 @@
-from .pages import pages_bp
+from .dashboard import dashboard_bp
