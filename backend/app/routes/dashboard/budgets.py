@@ -80,10 +80,8 @@ def create_budgets():
     amount = body.get('amount', 0)
     icon = body.get('icon', '🚗')
     #TODO: Add find clone 
-
     # Make new budget
     new_budget = Budgets(name = name, amount = amount, icon = icon)
-    
     # Add to database
     new_budget.insert()
     return jsonify({
@@ -96,13 +94,10 @@ def modify_budget(BudgetId):
     # Check for available id
     if not findBudget:
         abort(400)
-    
     body = request.get_json()
-
     findBudget.name = body.get('name', 'Untitled')
     findBudget.amount = body.get('amount', '0')
     findBudget.update()
-
     return jsonify({
         'success': True
     }), 200
