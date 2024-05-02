@@ -14,7 +14,9 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD")
 DB_HOST = os.environ.get("DB_HOST")
 SECRET_KEY = os.environ.get("SECRET_KEY", "YOUR-FALLBACK-SECRET-KEY")
 DATABASE_URI = "postgresql://{}:{}@{}/{}".format(DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
-
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN') 
+ALGORITHMS = os.environ.get('ALGORITHMS') 
+API_AUDIENCE = os.environ.get('API_AUDIENCE') 
 
 class DevConfig:
     # Flask

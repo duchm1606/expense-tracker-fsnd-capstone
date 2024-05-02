@@ -1,11 +1,36 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from app.extensions import AuthError
 
 bp = Blueprint('errors',__name__)
 
+@bp.app_errorhandler(422)
+def unprocessable(error):
+    return jsonify({
+        "success": False,
+        "error": 422,
+        "message": "unprocessable"
+    }), 422
+
 @bp.app_errorhandler(404)
-def handle404(error):
-    return '404 handled'
+def resource_not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }), 422
+
+@bp.app_errorhandler(AuthError)
+def authorize_error(error):
+    return jsonify({
+        "success": False,
+        "error": 403,
+        "message": "Permission denied"
+    }), 403
 
 @bp.app_errorhandler(500)
-def handle404(error):
-    return '500 handled'
+def resource_not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 500,
+        "message": "Internal server error"
+    }), 500

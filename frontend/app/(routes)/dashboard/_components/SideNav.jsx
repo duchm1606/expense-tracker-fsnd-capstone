@@ -7,28 +7,29 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Button } from '@/components/ui/button';
 import Link from 'next/link'
+import { getAccessToken } from '@auth0/nextjs-auth0/edge';
+const jwt = require('jsonwebtoken');
 
 function GetUserInformation() {
     const { user, error, isLoading } = useUser();
     const router = useRouter();
 
-    useEffect(() => {
-        if (!isLoading && !user) {
-        router.push('/api/auth/login?returnTo=/dashboard');
-        }
-    }, [user, isLoading]);
-
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>{error.message}</div>;
-
     return(
+        user ? 
         <div className='fixed bottom-10 flex gap-2 items-center'>
                 {user.picture && (
                 <img src={user.picture} alt="User Avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                 )}
                 <p style={{ margin: 2, marginLeft: '10px' }}>{user.name}</p>
-                <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}><Button>Logout</Button></a>
+                <a href="/api/auth/logout?returnTo=/dashboard" rel="noopener noreferrer" style={{ textDecoration: 'none' }}><Button>Logout</Button></a>
         </div>
+        : 
+        <div className='fixed bottom-10 flex gap-2 items-center'>
+                <a href="/api/auth/login?returnTo=/dashboard" rel="noopener noreferrer" style={{ textDecoration: 'none' }}><Button>Login</Button></a>
+        </div>
+
     )
 }
 

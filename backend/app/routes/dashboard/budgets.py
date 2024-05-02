@@ -108,6 +108,11 @@ def delete_budget(BudgetId):
     # Check for available id
     if not findBudget:
         abort(400)
+    # Delete all expense before delete budget
+    expenses = getExpensesByBudgetsId()
+    for expense in expenses:
+        expense.delete()
+    # Delte budget
     findBudget.delete()
     return jsonify({
         'success': True

@@ -5,12 +5,13 @@ import CardInfo from './_components/CardInfo';
 import ChartDashboard from './_components/ChartDashboard';
 import BudgetItem from './budgets/_components/BudgetItem';
 import ExpenseListTable from './expenses/_components/ExpenseListTable';
+import axios from 'axios';
+import { getPermissions } from '@/app/_components/getPerms';
 
 function Dashboard() {
   const {user}=useUser();
   const [budgetList, setBudgetList] = useState()
   const [expensesList, setExpensesList] = useState([])
-
   useEffect(()=>{
     getBudgetList()
   }, [])
@@ -18,6 +19,8 @@ function Dashboard() {
   useEffect(()=>{
     getExpensesList()
   }, [])
+
+  getPermissions('delete:budgets').then(data => console.log(data))
 
   /**
    * Get all Budget list
