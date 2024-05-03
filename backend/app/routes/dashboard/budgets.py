@@ -93,10 +93,11 @@ def modify_budget(BudgetId):
     findBudget = Budgets.query.filter_by(id = BudgetId).first()
     # Check for available id
     if not findBudget:
-        abort(400)
+        abort(404)
     body = request.get_json()
     findBudget.name = body.get('name', 'Untitled')
     findBudget.amount = body.get('amount', '0')
+    findBudget.icon = body.get('icon', '🚗')
     findBudget.update()
     return jsonify({
         'success': True
@@ -109,7 +110,7 @@ def delete_budget(BudgetId):
     if not findBudget:
         abort(400)
     # Delete all expense before delete budget
-    expenses = getExpensesByBudgetsId()
+    expenses = getExpensesByBudgetsId(BudgetId)
     for expense in expenses:
         expense.delete()
     # Delte budget

@@ -17,7 +17,7 @@ def resource_not_found(error):
         "success": False,
         "error": 404,
         "message": "resource not found"
-    }), 422
+    }), 404
 
 @bp.app_errorhandler(AuthError)
 def authorize_error(error):

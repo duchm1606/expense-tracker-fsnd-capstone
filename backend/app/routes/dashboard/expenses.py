@@ -15,7 +15,7 @@ def getExpenseInformation(expenses):
         expensesList.append({
             "id": expense.id,
             "name": expense.name,
-            "amunt": expense.amount,
+            "amount": expense.amount,
             "createAt": expense.createdDate
         })
     return expensesList
@@ -37,8 +37,23 @@ def getExpensesByBudgetId(budgetId):
     if not budget:
         abort(404)
     expenses = Expenses.query.filter_by(budgetId = budgetId).all()
-    expensesList = getExpenseInformation(expenses)
+    expenseSpend = 0
+    expensesList = []
+    for expense in expenses:
+        expenseSpend = expenseSpend + expense.amount
+        expensesList.append({
+            "id": expense.id,
+            "name": expense.name,
+            "amount": expense.amount,
+            "createAt": expense.createdDate
+        })
     return jsonify({
+        "id": budget.id,
+        "name": budget.name,
+        "icon": budget.icon,
+        "amount": budget.amount,
+        "totalSpend": expenseSpend,
+        "totalItem": len(expenses),
         "expenses": expensesList
     }), 200
 
