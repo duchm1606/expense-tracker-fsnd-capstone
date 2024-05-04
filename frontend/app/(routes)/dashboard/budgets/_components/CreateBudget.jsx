@@ -1,5 +1,5 @@
 "use client";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,31 +15,59 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 function CreateBudget({ refreshData }) {
+  const { user } = useUser();
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const [name, setName] = useState();
   const [amount, setAmount] = useState();
+  const [accessToken, setAccessToken] = useState([]);
 
-  /**
-   * used to Create new Budget
-   * @returns IDK :D
-   */
+  useEffect(() => {
+    getAccessToken();
+  }, []);
+
+  const getAccessToken = () => {
+    if (user) {
+      axios
+        .get("/api/users")
+        .then((res) => {
+          setAccessToken(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   const onCreateBudget = () => {
+    if (!accessToken) {
+      console.error("Access token is missing.");
+      return;
+    }
     axios
-      .post("http://localhost:5000/api/budgets/", {
-        name: name,
-        amount: amount,
-        icon: emojiIcon,
-      })
+      .post(
+        "http://localhost:5000/api/budgets/",
+        {
+          name: name,
+          amount: amount,
+          icon: emojiIcon,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((responses) => {
         if (responses.status == 200) {
           refreshData();
           toast("✅ New budget created!");
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => toast(" ❌ " + err.message));
   };
 
   return (

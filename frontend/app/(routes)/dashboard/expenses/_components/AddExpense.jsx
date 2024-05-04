@@ -1,19 +1,47 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function AddExpense({ budgetID, refreshData }) {
   const [name, setName] = useState();
   const [amount, setAmount] = useState();
+  const [accessToken, setAccessToken] = useState([]);
+  const { user } = useUser();
+
+  useEffect(() => {
+    getAccessToken();
+  }, []);
+
+  const getAccessToken = () => {
+    if (user) {
+      axios
+        .get("/api/users")
+        .then((res) => {
+          setAccessToken(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const addNewExpense = (budgetID) => {
     axios
-      .post("http://localhost:5000/api/expenses/" + budgetID, {
-        name: name,
-        amount: amount,
-      })
+      .post(
+        "http://localhost:5000/api/expenses/" + budgetID,
+        {
+          name: name,
+          amount: amount,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         if (response.status == 200) {
           refreshData();
@@ -36,6 +64,7 @@ function AddExpense({ budgetID, refreshData }) {
         <h2 className="text-black font-medium my-1">Amount</h2>
         <Input
           placeholder="e.g. 1000"
+          type="number"
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>

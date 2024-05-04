@@ -12,20 +12,11 @@ function ExpenseIndexes() {
   }, []);
 
   const getExpensesList = async () => {
-    // const result = [
-    //   {
-    //     id: 1,
-    //     name: "test",
-    //     amount: 100,
-    //     createdAt: "20/4/23",
-    //   },
-    // ];
     axios
       .get("http://localhost:5000/api/expenses/")
       .then((response) => {
         if (response.status == 200) {
           setExpensesList(response.data.expenses);
-          console.log(response.data.expenses);
         }
       })
       .catch((err) => toast(" ❌ " + err.message));

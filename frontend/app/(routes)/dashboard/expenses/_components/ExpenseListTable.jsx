@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 function ExpenseListTable({ expensesList, refreshData }) {
   const { user } = useUser();
   const [permissions, setPermissionsList] = useState([]);
+  const [accessToken, setAccessToken] = useState([]);
 
   useEffect(() => {
     getPermissions();
@@ -19,6 +20,7 @@ function ExpenseListTable({ expensesList, refreshData }) {
       axios
         .get("/api/users")
         .then((res) => {
+          setAccessToken(res.data.user);
           const accessPerms = jwt.decode(res.data.user, { complete: true });
           const access = accessPerms.payload.permissions;
           setPermissionsList(access);
@@ -30,10 +32,24 @@ function ExpenseListTable({ expensesList, refreshData }) {
     }
   };
 
-  const deleteExpense = async (expenseId) => {
-    await console.log(expenseId);
-    toast("Deleted the id " + expenseId);
-    refreshData();
+  const deleteExpense = (expenseId) => {
+    console.log(accessToken);
+    axios
+      .delete("http://localhost:5000/api/expenses/", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          id: expenseId,
+        },
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          toast("Deleted the id " + expenseId);
+          refreshData();
+        }
+      })
+      .catch((err) => toast(` ❌ ${err.message} ${expenseId}`));
   };
   return (
     <div className="mt-3">

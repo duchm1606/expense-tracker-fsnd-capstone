@@ -4,6 +4,8 @@ import json
 from app.models.budgets import Budgets
 from app.models.expenses import Expenses
 from app.util import errors_bp 
+from app.extensions.auth import requires_auth
+
 
 expenses_bp = Blueprint("expense", __name__, url_prefix="/expenses")
 expenses_bp.register_blueprint(errors_bp)
@@ -60,7 +62,8 @@ def getExpensesByBudgetId(budgetId):
 
 # Make a new expense
 @expenses_bp.route("/<int:budgetId>", methods=['POST'])
-def createExpense(budgetId):
+@requires_auth('post:expenses')
+def createExpense(token, budgetId):
     # Find for available budget
     budget = Budgets.query.filter_by(id = budgetId).first()
     if not budget:
@@ -80,7 +83,8 @@ def createExpense(budgetId):
 # Erase a expense
 # Required fields: id
 @expenses_bp.route("/", methods=['DELETE'])
-def deleteExpense():
+@requires_auth('delete:expenses')
+def deleteExpense(token):
     body = request.get_json()
     expenseId = body.get('id')
     expense = Expenses.query.get(expenseId)

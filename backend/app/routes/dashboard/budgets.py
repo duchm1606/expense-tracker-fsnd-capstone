@@ -5,35 +5,10 @@ import json
 from app.models.budgets import Budgets
 from app.models.expenses import Expenses
 from app.util import errors_bp 
+from app.extensions.auth import requires_auth
 
 budgets_bp = Blueprint("core", __name__, url_prefix="/budgets")
 budgets_bp.register_blueprint(errors_bp)
-
-'''
-Get all budgets
-    GET /dashboard/budgets/
-    {
-      numOfBudget: 2,
-      totalBudget: 3000,
-      totalSpend: 1005,
-      budgets: [{
-        id: 1,
-        name: 'hi',
-        icon: '🚗',
-        totalSpend: 1000,
-        totalItem: 10,
-        amount: 2000
-      },
-      {
-        id: 2,
-        name: 'hi',
-        icon: '🚗',
-        totalSpend: 5,
-        totalItem: 6,
-        amount: 1100
-      }] 
-    }
-'''
 
 def getExpensesByBudgetsId(budgetId):
     expenses = Expenses.query.filter_by(budgetId = budgetId).all()
@@ -74,7 +49,8 @@ def get_budgets():
         abort(500)
 
 @budgets_bp.route("/", methods=['POST'])
-def create_budgets():
+@requires_auth('post:budgets')
+def create_budgets(token):
     body = request.get_json()
     name = body.get('name', 'Untitled')
     amount = body.get('amount', 0)
@@ -89,7 +65,8 @@ def create_budgets():
     }), 200
 
 @budgets_bp.route("/<int:BudgetId>", methods=['PATCH'])
-def modify_budget(BudgetId):
+@requires_auth('patch:budget')
+def modify_budget(token, BudgetId):
     findBudget = Budgets.query.filter_by(id = BudgetId).first()
     # Check for available id
     if not findBudget:
@@ -104,7 +81,8 @@ def modify_budget(BudgetId):
     }), 200
     
 @budgets_bp.route("/<int:BudgetId>", methods=['DELETE'])
-def delete_budget(BudgetId):
+@requires_auth('delete:budgets')
+def delete_budget(token, BudgetId):
     findBudget = Budgets.query.filter_by(id = BudgetId).first()
     # Check for available id
     if not findBudget:

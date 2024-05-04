@@ -35,6 +35,7 @@ function Expenses({ params }) {
     amount: 0,
     expenses: [],
   });
+  const [accessToken, setAccessToken] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,6 +44,10 @@ function Expenses({ params }) {
 
   useEffect(() => {
     getPermissions();
+  }, []);
+
+  useEffect(() => {
+    getAccessToken();
   }, []);
 
   const getPermissions = () => {
@@ -60,6 +65,20 @@ function Expenses({ params }) {
         });
     }
   };
+
+  const getAccessToken = () => {
+    if (user) {
+      axios
+        .get("/api/users")
+        .then((res) => {
+          setAccessToken(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   /**
    * Fetch data from beckend server
    */
@@ -76,17 +95,21 @@ function Expenses({ params }) {
   };
 
   const deleteBudget = async () => {
-    /* Add delete behavior */
     axios
-      .delete("http://localhost:5000/api/budgets/" + params.id)
+      .delete("http://localhost:5000/api/budgets/" + params.id, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           toast("✅ Budgets cleared successfully");
           router.replace("/dashboard/budgets");
         }
-      });
+      })
+      .catch((err) => toast(" ❌ " + err.message));
   };
-  console.log(budgetInfo);
+
   return (
     <div className="p-10">
       <h2 className="text-2xl font-bold gap-2 flex justify-between items-center">

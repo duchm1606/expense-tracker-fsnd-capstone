@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { PenBox } from "lucide-react";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,20 +16,48 @@ import EmojiPicker from "emoji-picker-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 function EditBudget({ budgetInfo, refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const [name, setName] = useState(budgetInfo?.name);
   const [amount, setAmount] = useState(budgetInfo?.amount);
+  const [accessToken, setAccessToken] = useState([]);
+  const { user } = useUser();
+
+  useEffect(() => {
+    getAccessToken();
+  }, []);
+
+  const getAccessToken = () => {
+    if (user) {
+      axios
+        .get("/api/users")
+        .then((res) => {
+          setAccessToken(res.data.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const onUpdateBudget = () => {
     axios
-      .patch("http://localhost:5000/api/budgets/" + budgetInfo.id, {
-        name: name,
-        amount: amount,
-        icon: emojiIcon,
-      })
+      .patch(
+        "http://localhost:5000/api/budgets/" + budgetInfo.id,
+        {
+          name: name,
+          amount: amount,
+          icon: emojiIcon,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((responses) => {
         if (responses.status == 200) {
           refreshData();
