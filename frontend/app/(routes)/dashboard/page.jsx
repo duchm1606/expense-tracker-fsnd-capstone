@@ -7,6 +7,7 @@ import BudgetItem from "./budgets/_components/BudgetItem";
 import ExpenseListTable from "./expenses/_components/ExpenseListTable";
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import { toast } from "sonner";
 
 function Dashboard() {
   const { user } = useUser();

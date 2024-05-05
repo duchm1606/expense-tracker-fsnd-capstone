@@ -11,6 +11,8 @@ if FLASK_DEBUG:
     debug = FLASK_DEBUG
 if debug == 'True':
     from app.config.dev import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE
+else:
+    from app.config.prod import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE
 
 ## AuthError Exception
 '''

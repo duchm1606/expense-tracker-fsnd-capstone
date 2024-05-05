@@ -71,8 +71,9 @@ def createExpense(token, budgetId):
     body = request.get_json()
     name = body.get('name', None)
     amount = body.get('amount', None)
-    if (not name or not amount):
-        abort(402)
+    print(amount.isnumeric())
+    if (not name or not amount or not amount.isnumeric()):
+        abort(400)
     newExpense = Expenses(name = name, amount = amount, budgetId = budgetId)
     # Add to database
     newExpense.insert()

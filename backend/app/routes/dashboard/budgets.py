@@ -57,6 +57,8 @@ def create_budgets(token):
     icon = body.get('icon', '🚗')
     #TODO: Add find clone 
     # Make new budget
+    if not amount.isnumeric(): 
+        abort(400)
     new_budget = Budgets(name = name, amount = amount, icon = icon)
     # Add to database
     new_budget.insert()
@@ -72,9 +74,14 @@ def modify_budget(token, BudgetId):
     if not findBudget:
         abort(404)
     body = request.get_json()
-    findBudget.name = body.get('name', 'Untitled')
-    findBudget.amount = body.get('amount', '0')
-    findBudget.icon = body.get('icon', '🚗')
+    name = body.get('name', 'Untitled')
+    amount = body.get('amount', '0')
+    icon = body.get('icon', '🚗')
+    if not amount.isnumeric(): 
+        abort(400)
+    findBudget.name = name
+    findBudget.amount = amount
+    findBudget.icon = icon
     findBudget.update()
     return jsonify({
         'success': True
@@ -86,7 +93,7 @@ def delete_budget(token, BudgetId):
     findBudget = Budgets.query.filter_by(id = BudgetId).first()
     # Check for available id
     if not findBudget:
-        abort(400)
+        abort(404)
     # Delete all expense before delete budget
     expenses = getExpensesByBudgetsId(BudgetId)
     for expense in expenses:
