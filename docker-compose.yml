@@ -1,13 +1,33 @@
-version: "3.8"
+version: "3.9"
+
 services:
-  # frontend:
-  #   build: ./frontend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:3000"
+    depends_on:
+      - backend
 
   backend:
     build: ./backend
     ports:
       - "5000:5000"
+    depends_on:
+      - flask_db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@flask_db:5432/postgres
+
+  flask_db:
+    container_name: flask_db
+    image: postgres:13
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}

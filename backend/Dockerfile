@@ -1,10 +1,5 @@
 # Base image for Python Flask
-FROM python:3.11-bullseye
-
-# Python environment variables
-ENV PIP_DISABLE_PIP_VERSION_CHECK 1
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python:3.10-slim-bullseye
 
 # Set the working directory
 WORKDIR /flask-app
@@ -20,5 +15,5 @@ COPY . .
 EXPOSE 5000
 
 # Run the Flask app
-# CMD ["gunicorn", "-b", ":5000", "server:app"]
-CMD ["python", "server.py"]
+CMD ["gunicorn", "-b", ":5000", "server:app"]
+# CMD ["python", "server.py"]

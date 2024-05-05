@@ -6,10 +6,11 @@ from jose import jwt # type: ignore
 from urllib.request import urlopen
 # Import from dotenv
 
+debug = False
 FLASK_DEBUG = os.environ.get("FLASK_DEBUG", False)
 if FLASK_DEBUG:
     debug = FLASK_DEBUG
-if debug == 'True':
+if debug:
     from app.config.dev import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE
 else:
     from app.config.prod import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE

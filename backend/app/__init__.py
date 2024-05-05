@@ -14,8 +14,7 @@ def create_app(debug: bool = False):
 
     # Set current_app context
     app.app_context().push()
-
-    if (debug == 'True'):
+    if (debug=='True'):
         print('Running on Dev')
         from app.config.dev import DevConfig
         app.config.from_object(DevConfig)
