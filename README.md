@@ -42,6 +42,7 @@ From the frontend folder, run the following commands to start the client
 npm install // only once to install dependencies
 npm run dev
 ```
+The frontend will run on  `http://127.0.0.1:3000` or `localhost:3000`
 
 ## Run the project by Docker
 
