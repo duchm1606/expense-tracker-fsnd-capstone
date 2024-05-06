@@ -35,7 +35,7 @@ function ExpenseListTable({ expensesList, refreshData }) {
   const deleteExpense = (expenseId) => {
     console.log(accessToken);
     axios
-      .delete("http://localhost:5000/api/expenses/", {
+      .delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

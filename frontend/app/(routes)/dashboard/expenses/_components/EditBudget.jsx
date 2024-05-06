@@ -46,7 +46,7 @@ function EditBudget({ budgetInfo, refreshData }) {
   const onUpdateBudget = () => {
     axios
       .patch(
-        "http://localhost:5000/api/budgets/" + budgetInfo.id,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/${budgetInfo.id}`,
         {
           name: name,
           amount: amount,

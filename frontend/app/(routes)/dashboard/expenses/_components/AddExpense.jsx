@@ -31,7 +31,7 @@ function AddExpense({ budgetID, refreshData }) {
   const addNewExpense = (budgetID) => {
     axios
       .post(
-        "http://localhost:5000/api/expenses/" + budgetID,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${budgetID}`,
         {
           name: name,
           amount: amount,

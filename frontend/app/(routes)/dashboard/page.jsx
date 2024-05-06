@@ -45,7 +45,7 @@ function Dashboard() {
    */
   const getBudgetList = () => {
     axios
-      .get("http://localhost:5000/api/budgets/")
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/`)
       .then((responses) => {
         if (responses.status == 200) {
           console.log(responses.data);
@@ -57,7 +57,7 @@ function Dashboard() {
 
   const getExpensesList = async () => {
     axios
-      .get("http://localhost:5000/api/expenses/")
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/`)
       .then((response) => {
         if (response.status == 200) {
           setExpensesList(response.data.expenses);

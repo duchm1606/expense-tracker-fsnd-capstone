@@ -84,7 +84,7 @@ function Expenses({ params }) {
    */
   const getBudgetInfo = async () => {
     axios
-      .get("http://localhost:5000/api/expenses/" + params.id)
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${params.id}`)
       .then((response) => {
         if (response.status == 200) {
           //   console.log(response.data);
@@ -96,11 +96,14 @@ function Expenses({ params }) {
 
   const deleteBudget = async () => {
     axios
-      .delete("http://localhost:5000/api/budgets/" + params.id, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         if (response.status == 200) {
           toast("✅ Budgets cleared successfully");

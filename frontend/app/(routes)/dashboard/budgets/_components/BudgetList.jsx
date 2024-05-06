@@ -35,9 +35,11 @@ function BudgetList() {
     }
   };
 
+  console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/`);
+
   const getBudgetList = () => {
     axios
-      .get("http://localhost:5000/api/budgets/")
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/`)
       .then((responses) => {
         if (responses.status == 200) {
           setBudgetList(responses.data.budgets);

@@ -13,7 +13,7 @@ function ExpenseIndexes() {
 
   const getExpensesList = async () => {
     axios
-      .get("http://localhost:5000/api/expenses/")
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/`)
       .then((response) => {
         if (response.status == 200) {
           setExpensesList(response.data.expenses);

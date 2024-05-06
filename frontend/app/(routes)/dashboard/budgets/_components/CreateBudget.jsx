@@ -49,7 +49,7 @@ function CreateBudget({ refreshData }) {
     }
     axios
       .post(
-        "http://localhost:5000/api/budgets/",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/budgets/`,
         {
           name: name,
           amount: amount,
