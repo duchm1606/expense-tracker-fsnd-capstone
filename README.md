@@ -72,11 +72,11 @@ export FLASK_DEBUG=False
 python3 -m pytest
 ```
 
-In many test has failed in status 403, maybe the token has been expired. After login in frontend, send a get request to `/api/users` to get the token access key
+In many test has failed in status 403, maybe the token has been expired. After login in frontend, send a get request to `/api/users` to get the token access key, then paste into `adminToken` and `memberToken`, then run again
 
 ## API Reference & Authentication - Authorization
 
-See DETAIL
+See [DETAIL](https://github.com/itsnot-aduck/expense-tracker-fsnd-capstone/blob/main/backend/README.md#api-reference)
 
 ## Authors
 
