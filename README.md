@@ -51,13 +51,19 @@ This project support run directly by docker. To executive, run the command
 docker-compose up --build
 ```
 
+or
+
+```
+docker compose up --build
+```
+
 Make sure you have installed docker on your machine
 
 ## Test
 
-This project support production test only.
+This project supports production test only.
 
-In order to run test, navigate to the backend folder, change the `database_test.db` to `database.db` to populate the testing data
+In order to run test, navigate to the backend folder, change the `database_test.db` to `database.db` in `/instance` to populate the testing data
 
 Then, run the following command
 
@@ -66,7 +72,9 @@ export FLASK_DEBUG=False
 python3 -m pytest
 ```
 
-## API Reference
+In many test has failed in status 403, maybe the token has been expired. After login in frontend, send a get request to `/api/users` to get the token access key
+
+## API Reference & Authentication - Authorization
 
 See DETAIL
 

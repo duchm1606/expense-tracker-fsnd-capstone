@@ -105,7 +105,7 @@ def verify_decode_jwt(token):
             raise AuthError({
                 'code': 'token_expired',
                 'description': 'Token expired.'
-            })
+            }, 401)
         
         except jwt.JWTClaimsError:
             raise AuthError({
