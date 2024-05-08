@@ -11,6 +11,8 @@ At the end, users of the app should be able to
   - For admin: Can manage budgets and expenses by create, modify and delete them
   - For members: Can manage expenses in budgets
 
+Live server: [Demo](http://44.202.68.107)
+
 # Quick start
 
 ## Pre-requisites and Local Development
